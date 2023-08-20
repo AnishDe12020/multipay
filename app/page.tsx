@@ -80,7 +80,7 @@ export default function IndexPage() {
 
       <div className="flex gap-4">
         <Link
-          href={`/receive/${publicKey}?token=${tokenChosen}`}
+          href={`/receive/${publicKey}/${tokenChosen}`}
           className={buttonVariants({ className: "w-fit" })}
           target="_blank"
           rel="noreferrer"
@@ -93,7 +93,7 @@ export default function IndexPage() {
           className="w-fit"
           onClick={() => {
             navigator.clipboard.writeText(
-              `${window.location.origin}/receive/${publicKey}?token=${tokenChosen}`
+              `${window.location.origin}/receive/${publicKey}/${tokenChosen}`
             )
             toast("Link copied to clipboard")
           }}

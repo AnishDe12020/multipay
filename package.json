@@ -14,10 +14,12 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache"
   },
   "dependencies": {
+    "@jup-ag/react-hook": "4.0.0-beta.17",
     "@radix-ui/react-select": "^1.2.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@solana/pay": "^0.2.5",
     "@solana/qr-code-styling": "^1.6.0",
+    "@solana/spl-token": "^0.3.8",
     "@solana/spl-token-registry": "^0.2.4574",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-react": "^0.15.34",
@@ -28,6 +30,7 @@
     "bs58": "^5.0.0",
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
+    "jsbi": "^4.3.0",
     "lucide-react": "latest",
     "next": "^13.4.8",
     "next-themes": "^0.2.1",

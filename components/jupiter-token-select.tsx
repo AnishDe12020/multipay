@@ -13,52 +13,111 @@ import {
 
 export const PAIR_SELECTOR_TOP_TOKENS = [
   "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", // USDC
-  "So11111111111111111111111111111111111111112", // SOL
   "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB", // USDT
   "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", // BONK
   "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y", // SHDW
 ]
 
+export const SUPPORTED_TOKENS = [
+  {
+    address: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    chainId: 101,
+    decimals: 6,
+    name: "USD Coin",
+    symbol: "USDC",
+    logoURI:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png",
+    tags: ["old-registry"],
+    extensions: {
+      coingeckoId: "usd-coin",
+    },
+  },
+  {
+    address: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+    chainId: 101,
+    decimals: 6,
+    name: "USDT",
+    symbol: "USDT",
+    logoURI:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg",
+    tags: ["old-registry", "solana-fm"],
+    extensions: {
+      coingeckoId: "tether",
+    },
+  },
+  {
+    address: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+    chainId: 101,
+    decimals: 5,
+    name: "BonkCoin",
+    symbol: "Bonk",
+    logoURI:
+      "https://arweave.net/hQiPZOsRZXGXBJd_82PhVdlM_hACsT_q6wqwf5cSY7I?ext=png",
+    tags: ["community", "solana-fm"],
+    extensions: {
+      coingeckoId: "bonk",
+    },
+  },
+  {
+    address: "SHDWyBxihqiCj6YekG2GUr7wqKLeLAMK1gHZck9pL6y",
+    chainId: 101,
+    decimals: 9,
+    name: "Shadow Token",
+    symbol: "SHDW",
+    logoURI:
+      "https://shdw-drive.genesysgo.net/FDcC9gn12fFkSU2KuQYH4TUjihrZxiTodFRWNF4ns9Kt/250x250_with_padding.png",
+    tags: ["old-registry", "solana-fm"],
+    extensions: {
+      coingeckoId: "genesysgo-shadow",
+    },
+  },
+]
+
 const JupiterTokenSelect = ({
   onChange,
   value,
+  validTokens,
 }: {
   onChange: (value: any) => void
   value: any
+  validTokens?: any[]
 }) => {
-  const [tokens, setTokens] = useState<any[]>()
+  //   const [tokens, setTokens] = useState<any[]>()
 
-  useEffect(() => {
-    async function fetchTokens() {
-      try {
-        const response = await axios.get("https://token.jup.ag/all")
-        const tokenData = response.data
+  //   useEffect(() => {
+  //     async function fetchTokens() {
+  //       try {
+  //         const response = await axios.get("https://token.jup.ag/all")
+  //         const tokenData = response.data
 
-        setTokens(tokenData)
-      } catch (error) {
-        console.error(error)
-      }
-    }
+  //         setTokens(tokenData)
+  //       } catch (error) {
+  //         console.error(error)
+  //       }
+  //     }
 
-    fetchTokens()
-  }, [])
+  //     fetchTokens()
+  //   }, [])
 
-  const supportedTokens = useMemo(() => {
-    if (!tokens) return []
+  //   const supportedTokens = useMemo(() => {
+  //     if (!tokens) return []
 
-    return tokens.filter((token) =>
-      PAIR_SELECTOR_TOP_TOKENS.includes(token.address)
-    )
-  }, [tokens])
+  //     return tokens.filter((token) =>
+  //       PAIR_SELECTOR_TOP_TOKENS.includes(token.address)
+  //     )
+  //   }, [tokens])
 
-  return tokens ? (
+  //   console.log(supportedTokens)
+
+  //   return tokens ? (
+  return (
     <Select value={value} onValueChange={(e) => onChange(e)}>
       <SelectTrigger className="w-[220px]">
         <SelectValue placeholder="Select a Token" />
       </SelectTrigger>
 
       <SelectContent>
-        {supportedTokens.map((token) => {
+        {(validTokens ?? SUPPORTED_TOKENS).map((token) => {
           return (
             <SelectItem key={token.address} value={token.address}>
               <div className="flex">
@@ -74,7 +133,8 @@ const JupiterTokenSelect = ({
         })}
       </SelectContent>
     </Select>
-  ) : null
+  )
+  //   ) : null
 }
 
 export default JupiterTokenSelect
