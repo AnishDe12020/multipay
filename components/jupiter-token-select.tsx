@@ -1,8 +1,5 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import axios from "axios"
-
 import {
   Select,
   SelectContent,
@@ -82,34 +79,6 @@ const JupiterTokenSelect = ({
   value: any
   validTokens?: any[]
 }) => {
-  //   const [tokens, setTokens] = useState<any[]>()
-
-  //   useEffect(() => {
-  //     async function fetchTokens() {
-  //       try {
-  //         const response = await axios.get("https://token.jup.ag/all")
-  //         const tokenData = response.data
-
-  //         setTokens(tokenData)
-  //       } catch (error) {
-  //         console.error(error)
-  //       }
-  //     }
-
-  //     fetchTokens()
-  //   }, [])
-
-  //   const supportedTokens = useMemo(() => {
-  //     if (!tokens) return []
-
-  //     return tokens.filter((token) =>
-  //       PAIR_SELECTOR_TOP_TOKENS.includes(token.address)
-  //     )
-  //   }, [tokens])
-
-  //   console.log(supportedTokens)
-
-  //   return tokens ? (
   return (
     <Select value={value} onValueChange={(e) => onChange(e)}>
       <SelectTrigger className="w-[220px]">

@@ -63,6 +63,7 @@ const ReceivePage = ({
   const [validTokens, setValidTokens] = useState<any[]>()
   const [quote, setQuote] = useState<any>()
   const [walletData, setWalletData] = useState<any>()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     ;(async () => {
@@ -82,8 +83,6 @@ const ReceivePage = ({
       )
 
       const getMint = (index: number) => indexedRouteMap["mintKeys"][index]
-      const getIndex = (mint: string) =>
-        indexedRouteMap["mintKeys"].indexOf(mint)
 
       let generatedRouteMap: Record<string, string[]> = {}
       const indexedRouteMapData: { indexedRouteMap: Record<string, number[]> } =
@@ -92,7 +91,7 @@ const ReceivePage = ({
           .then((res) => res.data)
 
       Object.keys(indexedRouteMapData.indexedRouteMap).forEach(
-        (key: string, index: number) => {
+        (key: string) => {
           generatedRouteMap[getMint(Number(key))] =
             indexedRouteMapData.indexedRouteMap[key].map((index: number) =>
               getMint(index)
@@ -135,8 +134,6 @@ const ReceivePage = ({
           }
         )
 
-        console.log(quote)
-
         setQuote(quote)
       } catch (error) {
         toast.error("Swap not possible", {
@@ -155,13 +152,14 @@ const ReceivePage = ({
     try {
       // Token
       const tokenData = walletData.tokens.find((t: any) => t.address === token)
-      console.log(tokenData)
       if (amount > tokenData?.balance) {
         toast.error("Insufficient balance", {
           description: `You don't have enough ${tokenData.symbol} to pay`,
         })
         return
       }
+
+      setLoading(true)
 
       if (token === params.token) {
         const userATA = getAssociatedTokenAddressSync(
@@ -207,6 +205,7 @@ const ReceivePage = ({
         )
 
         toast.success("Payment successful!")
+        setLoading(false)
       } else {
         const { data: swapInstructions } = await axios.post(
           "https://quote-api.jup.ag/v6/swap-instructions",
@@ -216,8 +215,6 @@ const ReceivePage = ({
             wrapUnwrapSOL: true,
           })
         )
-
-        console.log(swapInstructions)
 
         const {
           computeBudgetInstructions: computeBudgetInstructionsPayload, // The necessary instructions to setup the compute budget.
@@ -308,10 +305,12 @@ const ReceivePage = ({
         )
 
         toast.success("Payment successful!")
+        setLoading(false)
       }
     } catch (error) {
       console.error(error)
       toast.error("Payment failed")
+      setLoading(false)
     }
   }
 
@@ -393,12 +392,12 @@ const ReceivePage = ({
                   </div>
                 )}
 
-                <Button className="mt-8" onClick={pay}>
+                <Button className="mt-8" onClick={pay} isLoading={loading}>
                   Swap and Pay
                 </Button>
               </>
             ) : (
-              <Button className="mt-8" onClick={pay}>
+              <Button className="mt-8" onClick={pay} isLoading={loading}>
                 Pay
               </Button>
             ))}

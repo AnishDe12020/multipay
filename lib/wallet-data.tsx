@@ -1,24 +1,8 @@
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token"
-import {
-  Connection,
-  GetProgramAccountsFilter,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-} from "@solana/web3.js"
+import { Connection, GetProgramAccountsFilter } from "@solana/web3.js"
 import axios from "axios"
 
-const getSOL = async (address: string, connection: Connection) => {
-  if (!address) {
-    return null
-  }
-  const balance = await connection.getBalance(new PublicKey(address))
-
-  return {
-    inSOL: balance / LAMPORTS_PER_SOL,
-  }
-}
-
-const getTokens = async (address: string, connection: Connection) => {
+export const getTokens = async (address: string, connection: Connection) => {
   if (!address) {
     return null
   }
@@ -66,33 +50,3 @@ const getTokens = async (address: string, connection: Connection) => {
 
   return tokens
 }
-
-const getNetWorth = async (
-  solUSD: number | null | undefined,
-  tokens: any[] | null
-) => {
-  if (!solUSD && !tokens) {
-    return null
-  }
-
-  if (!tokens || (tokens.length === 0 && solUSD)) {
-    return solUSD
-  }
-
-  if (!solUSD && tokens && tokens.length > 0) {
-    return tokens.reduce((acc: any, token: { valueInUSD: any }) => {
-      return acc + token.valueInUSD
-    }, 0)
-  }
-
-  const netWorth: number = tokens.reduce(
-    (acc: number, token: { valueInUSD: number }) => {
-      return acc + token.valueInUSD
-    },
-    solUSD
-  )
-
-  return netWorth.toFixed(2)
-}
-
-export { getSOL, getTokens, getNetWorth }

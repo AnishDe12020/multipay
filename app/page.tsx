@@ -67,41 +67,43 @@ export default function IndexPage() {
       </div>
 
       {publicKey ? (
-        <JupiterTokenSelect value={tokenChosen} onChange={setTokenChosen} />
+        <>
+          <JupiterTokenSelect value={tokenChosen} onChange={setTokenChosen} />
+
+          <div className="p-4 bg-white rounded-xl w-fit">
+            <div ref={qrRef} />
+          </div>
+
+          <div className="flex gap-4">
+            <Link
+              href={`/receive/${publicKey}/${tokenChosen}`}
+              className={buttonVariants({ className: "w-fit" })}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View your link
+              <ExternalLinkIcon className="inline-block w-4 h-4 ml-2" />
+            </Link>
+
+            <Button
+              className="w-fit"
+              onClick={() => {
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/receive/${publicKey}/${tokenChosen}`
+                )
+                toast("Link copied to clipboard")
+              }}
+            >
+              Copy link
+              <ClipboardCopyIcon className="inline-block w-4 h-4 ml-2" />
+            </Button>
+          </div>
+        </>
       ) : (
         <div className="w-fit">
           <DynamicWalletMultiButton style={{ backgroundColor: "#9945FF" }} />
         </div>
       )}
-
-      <div className="p-4 bg-white rounded-xl w-fit">
-        <div ref={qrRef} />
-      </div>
-
-      <div className="flex gap-4">
-        <Link
-          href={`/receive/${publicKey}/${tokenChosen}`}
-          className={buttonVariants({ className: "w-fit" })}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View your link
-          <ExternalLinkIcon className="inline-block w-4 h-4 ml-2" />
-        </Link>
-
-        <Button
-          className="w-fit"
-          onClick={() => {
-            navigator.clipboard.writeText(
-              `${window.location.origin}/receive/${publicKey}/${tokenChosen}`
-            )
-            toast("Link copied to clipboard")
-          }}
-        >
-          Copy link
-          <ClipboardCopyIcon className="inline-block w-4 h-4 ml-2" />
-        </Button>
-      </div>
     </section>
   )
 }
