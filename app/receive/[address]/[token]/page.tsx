@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
-import { useJupiter } from "@jup-ag/react-hook"
+// @ts-ignore
 import {
   createTransferCheckedInstruction,
   getAssociatedTokenAddressSync,
@@ -11,20 +11,17 @@ import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import {
   AddressLookupTableAccount,
   Connection,
-  LAMPORTS_PER_SOL,
   PublicKey,
-  SystemProgram,
   Transaction,
   TransactionInstruction,
   TransactionMessage,
   VersionedTransaction,
-  sendAndConfirmTransaction,
 } from "@solana/web3.js"
 import axios from "axios"
 import { toast } from "sonner"
 
 import { truncatePubkey } from "@/lib/truncate"
-import { getSOL, getTokens } from "@/lib/wallet-data"
+import { getTokens } from "@/lib/wallet-data"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import JupiterTokenSelect, {
@@ -224,13 +221,9 @@ const ReceivePage = ({
 
         const {
           computeBudgetInstructions: computeBudgetInstructionsPayload, // The necessary instructions to setup the compute budget.
-          setupInstructions: setupInstructionsPayload, // Setup missing ATA for the users.
           swapInstruction: swapInstructionPayload, // The actual swap instruction.
-          cleanupInstruction, // Unwrap the SOL if `wrapUnwrapSOL = true`.
           addressLookupTableAddresses,
         } = swapInstructions
-
-        const tx = new Transaction()
 
         const swapInstruction = new TransactionInstruction({
           programId: new PublicKey(swapInstructionPayload.programId),
